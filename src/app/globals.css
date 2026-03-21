@@ -34,3 +34,12 @@ body {
   color: var(--foreground);
   font-family: var(--font-phetsarath), sans-serif;
 }
+
+/* Force Phetsarath on Leaflet Popups */
+.leaflet-container {
+  font-family: var(--font-phetsarath), sans-serif !important;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-content {
+  font-family: var(--font-phetsarath), sans-serif !important;
+}

@@ -8,8 +8,20 @@ type Station = {
   id: string
   name: string
   brand: string | null
-  fuel_status: 'available' | 'low' | 'out_of_stock' | null
-  queue_status: 'short' | 'medium' | 'long' | null
+  fuel_status: 'available' | 'low' | 'out_of_stock' | 'unknown' | null
+  queue_status: 'short' | 'medium' | 'long' | 'unknown' | null
+}
+
+type Comment = {
+  id: string
+  content: string
+  created_at: string
+  user_id: string
+  profiles: {
+    full_name: string
+    avatar_url: string
+    points: number
+  }
 }
 
 interface ReportModalProps {
@@ -24,14 +36,71 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
   const [queueStatus, setQueueStatus] = useState<string>('')
   const [isUpdating, setIsUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [comments, setComments] = useState<Comment[]>([])
+  const [newComment, setNewComment] = useState('')
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false)
+  const [userPoints, setUserPoints] = useState<number>(0)
 
   useEffect(() => {
     if (station) {
       setFuelStatus(station.fuel_status || 'available')
       setQueueStatus(station.queue_status || 'short')
       setError(null)
+      fetchComments()
     }
   }, [station])
+
+  useEffect(() => {
+    if (user) {
+      fetchUserPoints()
+    }
+  }, [user])
+
+  const fetchUserPoints = async () => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('points')
+      .eq('id', user?.id)
+      .single()
+    if (data) setUserPoints(data.points)
+  }
+
+  const fetchComments = async () => {
+    if (!station) return
+    const { data } = await supabase
+      .from('comments')
+      .select(`
+        id, content, created_at, user_id,
+        profiles (full_name, avatar_url, points)
+      `)
+      .eq('station_id', station.id)
+      .order('created_at', { ascending: false })
+    if (data) setComments(data as any)
+  }
+
+  useEffect(() => {
+    if (!station) return
+
+    const channel = supabase
+      .channel(`comments-${station.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'comments',
+          filter: `station_id=eq.${station.id}`,
+        },
+        () => {
+          fetchComments()
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [station?.id])
 
   if (!station) return null
 
@@ -68,6 +137,20 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
         })
 
       onReportSuccess()
+      
+      // Increment points (+10 for report)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('points')
+        .eq('id', user.id)
+        .single()
+      
+      await supabase
+        .from('profiles')
+        .update({ points: (profile?.points || 0) + 10 })
+        .eq('id', user.id)
+      
+      fetchUserPoints()
       onClose()
     } catch (err: any) {
       setError(err.message || 'ເກີດຂໍ້ຜິດພາດໃນການອັບເດດ')
@@ -77,7 +160,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
   }
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[2000] flex items-end sm:items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200 font-phetsarath">
       <div 
         className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 duration-300"
         onClick={(e) => e.stopPropagation()}
@@ -114,11 +197,11 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                 value={fuelStatus}
                 onChange={(e) => setFuelStatus(e.target.value)}
                 disabled={isUpdating}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3.5 pr-10 transition-all hover:bg-white disabled:opacity-50"
+                className="w-full appearance-none bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3.5 pr-10 transition-all hover:bg-white disabled:opacity-50 font-phetsarath"
               >
-                <option value="available">Available (ມີນ້ຳມັນ)</option>
-                <option value="low">Low Fuel (ເຫຼືອນ້ຳໜ້ອຍ)</option>
-                <option value="out_of_stock">Out of Stock (ນ້ຳມັນໝົດ)</option>
+                <option value="available">ມີນ້ຳມັນ (Available)</option>
+                <option value="low">ນ້ຳມັນໜ້ອຍ (Low)</option>
+                <option value="out_of_stock">ນ້ຳມັນໝົດ (Out of Stock)</option>
               </select>
               <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400 group-hover:text-gray-600">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -142,9 +225,9 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                   <option value="">- ບໍ່ມີຄິວ -</option>
                 ) : (
                   <>
-                    <option value="short">Short Queue (ຄິວນ້ອຍ)</option>
-                    <option value="medium">Medium Queue (ຄິວປານກາງ)</option>
-                    <option value="long">Long Queue (ຄິວຍາວ)</option>
+                    <option value="short">ຄິວນ້ອຍ (Short)</option>
+                    <option value="medium">ຄິວປານກາງ (Medium)</option>
+                    <option value="long">ຄິວຍາວ (Long)</option>
                   </>
                 )}
               </select>
@@ -188,6 +271,91 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
             </button>
           </div>
         </form>
+
+        {/* Comments Section */}
+        <div className="p-6 border-t border-gray-100 bg-gray-50/50">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+              💬 ຄວາມຄິດເຫັນ ({comments.length})
+            </h3>
+            {user && (
+              <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded-lg">
+                🏆 ຄະແນນຂອງທ່ານ: {userPoints}
+              </span>
+            )}
+          </div>
+
+          <div className="space-y-4 mb-4 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+            {comments.map((comment) => (
+              <div key={comment.id} className="bg-white p-3 rounded-xl shadow-sm border border-gray-100">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center gap-2">
+                    <img src={comment.profiles.avatar_url || 'https://via.placeholder.com/32'} className="w-5 h-5 rounded-full object-cover" />
+                    <span className="text-xs font-bold text-gray-700">{comment.profiles.full_name}</span>
+                    <span className="text-[8px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded-full border border-blue-100">
+                      Lv.{Math.floor(comment.profiles.points / 50) + 1}
+                    </span>
+                  </div>
+                  <span className="text-[9px] text-gray-400">
+                    {new Date(comment.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed">{comment.content}</p>
+              </div>
+            ))}
+            {comments.length === 0 && (
+              <p className="text-xs text-center text-gray-400 py-4 italic">ຍັງບໍ່ມີຄວາມຄິດເຫັນ</p>
+            )}
+          </div>
+
+          {user ? (
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="ສະແດງຄວາມຄິດເຫັນ..."
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="flex-1 text-xs p-2.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+              />
+              <button
+                onClick={async () => {
+                  if (!newComment.trim()) return
+                  setIsSubmittingComment(true)
+                  const { error } = await supabase.from('comments').insert({
+                    station_id: station.id,
+                    user_id: user.id,
+                    content: newComment
+                  })
+                  if (!error) {
+                    setNewComment('')
+                    
+                    // Award points for commenting (+5)
+                    const { data: profile } = await supabase
+                      .from('profiles')
+                      .select('points')
+                      .eq('id', user.id)
+                      .single()
+                    
+                    await supabase
+                      .from('profiles')
+                      .update({ points: (profile?.points || 0) + 5 })
+                      .eq('id', user.id)
+
+                    fetchComments()
+                    fetchUserPoints() // Refresh points in modal
+                  }
+                  setIsSubmittingComment(false)
+                }}
+                disabled={isSubmittingComment || !newComment.trim()}
+                className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs font-bold hover:bg-green-700 transition-colors disabled:opacity-50"
+              >
+                {isSubmittingComment ? '...' : 'ສົ່ງ'}
+              </button>
+            </div>
+          ) : (
+            <p className="text-[10px] text-center text-gray-400">ເຂົ້າສູ່ລະບົບເພື່ອສະແດງຄວາມຄິດເຫັນ</p>
+          )}
+        </div>
       </div>
     </div>
   )

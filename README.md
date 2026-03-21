@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⛽ Lao Fuel Tracker (PWA)
 
-## Getting Started
+ເວັບໄຊຕິດຕາມສະຖານະປ້ຳນ້ຳມັນ ແລະ ຄິວໃນລາວແບບ Real-time. ສ້າງຂຶ້ນເພື່ອຊ່ວຍເຫຼືອສັງຄົມໃນການຊອກຫານ້ຳມັນໄດ້ໄວຂຶ້ນ.
 
-First, run the development server:
+## 🚀 Features (ຄວາມສາມາດຂອງແອັບ)
+- **Real-time Map:** ແຜນທີ່ສະແດງຈຸດປ້ຳນ້ຳມັນ ແລະ ສະຖານະແບບສົດໆ.
+- **Live Updates:** ອັບເດດຂໍ້ມູນໄດ້ທັນທີ (ມີນ້ຳມັນ/ໃກ້ໝົດ/ໝົດ) ຜ່ານ Supabase Realtime.
+- **Find Nearest:** ຄົ້ນຫາປ້ຳທີ່ໃກ້ທີ່ສຸດດ້ວຍ GPS.
+- **PWA Ready:** ສາມາດຕິດຕັ້ງລົງໜ້າມືຖືໄດ້ຄືກັບ App ແທ້.
+
+## 🛠 Tech Stack
+- **Framework:** Next.js 14
+- **Database/Auth:** Supabase (Google Auth)
+- **Map:** Leaflet.js
+- **Styling:** Tailwind CSS
+
+---
+
+## 💻 Getting Started (ສຳລັບນັກພັດທະນາ)
+
+ທຳອິດ, ຕິດຕັ້ງ dependencies ແລະ run ໂປຣເຈັກໃນເຄື່ອງ:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📖 ວິທີການນຳໃຊ້ (User Manual)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **ການເຂົ້າໃຊ້ງານ:** ເຂົ້າໄປທີ່ URL [https://fuel-tracker2.app](https://fuel-tracker2.app) ຜ່ານ Browser ໃນມືຖື ຫຼື ຄອມພິວເຕີ.
+2. **ການຊອກຫາປ້ຳ:** - ກົດປຸ່ມ **"GPS Icon"** ເພື່ອໃຫ້ແຜນທີ່ສະແດງຕຳແໜ່ງປັດຈຸບັນຂອງທ່ານ.
+   - ລະບົບຈະຄິດໄລ່ ແລະ ແນະນຳປ້ຳນ້ຳມັນທີ່ຢູ່ໃກ້ທ່ານທີ່ສຸດ.
+3. **ການເບິ່ງສະຖານະ:** ກົດໃສ່ **ໝຸດ (Marker)** ຂອງປ້ຳນ້ຳມັນເພື່ອເບິ່ງວ່າ "ມີນ້ຳມັນບໍ່?" ຫຼື "ຄິວຍາວປານໃດ?".
+4. **ການລາຍງານຂໍ້ມູນ (Report):**
+   - ທ່ານຕ້ອງ **Login ຜ່ານ Google** ກ່ອນຈຶ່ງຈະສາມາດອັບເດດຂໍ້ມູນໄດ້.
+   - ເລືອກສະຖານະນ້ຳມັນຈາກ **Dropdown List** ແລ້ວກົດ Submit. ຂໍ້ມູນຈະຖືກອັບເດດໃຫ້ທຸກຄົນເຫັນແບບ Real-time!
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🤝 ເຄຣດິດ ແລະ ຜູ້ພັດທະນາ (Credits)
 
-## Learn More
+- **Developed by:** [ຈີວ່າງ - Chivang] 
+- **Purpose:** ໂປຣເຈັກນີ້ສ້າງຂຶ້ນເພື່ອເປັນສ່ວນໜຶ່ງຂອງການຮຽນຮູ້ການພັດທະນາ Full-stack Web Application ແລະ ເພື່ອຊ່ວຍແກ້ໄຂບັນຫາການຊອກຫານ້ຳມັນໃນຊີວິດປະຈຳວັນ.
+- **Special Thanks:** - **Gemini AI:** ທີ່ປຶກສາດ້ານ Coding ແລະ ການວາງລະບົບ.
+  - **Supabase & Vercel:** ຜູ້ໃຫ້ບໍລິການ Backend ແລະ Hosting ທີ່ຍອດຢ້ຽມ.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+© 2026 Lao Fuel Tracker Project.

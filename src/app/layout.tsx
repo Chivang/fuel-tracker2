@@ -40,9 +40,14 @@ export default function RootLayout({
     <html
       lang="lo"
       className={`${phetsarath.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-phetsarath overflow-x-hidden selection:bg-green-100 selection:text-green-900">
+      <body 
+        className="min-h-full flex flex-col font-phetsarath overflow-x-hidden selection:bg-green-100 selection:text-green-900"
+        suppressHydrationWarning
+      >
         {children}
+      {/*
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -61,6 +66,7 @@ export default function RootLayout({
             `,
           }}
         />
+      */}
       </body>
     </html>
   );
