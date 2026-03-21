@@ -86,7 +86,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="ຕົວຢ່າງ: PTT ໂພນທັນ"
-              className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm"
+              className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
             />
           </div>
 
@@ -98,7 +98,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
               placeholder="ຕົວຢ່າງ: PTT, Plus, PetroTrade"
-              className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm"
+              className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
             />
           </div>
 
@@ -109,7 +109,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
               <select
                 value={fuelStatus}
                 onChange={(e) => setFuelStatus(e.target.value)}
-                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm"
+                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900"
               >
                 <option value="available">ມີນໍ້າມັນ</option>
                 <option value="low">ນໍ້າມັນໜ້ອຍ</option>
@@ -124,7 +124,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
               <select
                 value={queueStatus}
                 onChange={(e) => setQueueStatus(e.target.value)}
-                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm"
+                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900"
               >
                 <option value="short">ຄິວນ້ອຍ</option>
                 <option value="medium">ຄິວປານກາງ</option>
