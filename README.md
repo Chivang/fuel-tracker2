@@ -36,7 +36,7 @@ npm run dev
 
 ## 🤝 ເຄຣດິດ ແລະ ຜູ້ພັດທະນາ (Credits)
 
-- **Developed by:** [ຈີວ່າງ, Chivang] 
+- **Developed by:** [ຈີວ່າງ - Chivang] 
 - **Purpose:** ໂປຣເຈັກນີ້ສ້າງຂຶ້ນເພື່ອເປັນສ່ວນໜຶ່ງຂອງການຮຽນຮູ້ການພັດທະນາ Full-stack Web Application ແລະ ເພື່ອຊ່ວຍແກ້ໄຂບັນຫາການຊອກຫານ້ຳມັນໃນຊີວິດປະຈຳວັນ.
 - **Special Thanks:** - **Gemini AI:** ທີ່ປຶກສາດ້ານ Coding ແລະ ການວາງລະບົບ.
   - **Supabase & Vercel:** ຜູ້ໃຫ້ບໍລິການ Backend ແລະ Hosting ທີ່ຍອດຢ້ຽມ.
