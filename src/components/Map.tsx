@@ -19,9 +19,12 @@ interface Station {
   lng: number
   fuel_status: 'available' | 'low' | 'out_of_stock' | 'unknown'
   queue_status: 'short' | 'medium' | 'long' | 'unknown'
-  last_updated: string
+  updated_at: string
   approval_status: 'pending' | 'approved' | 'rejected'
   created_by?: string
+  has_premium: boolean
+  has_regular: boolean
+  has_diesel: boolean
 }
 
 interface UserPoints {
@@ -276,6 +279,18 @@ export default function Map({ user }: { user: User | null }) {
                       </div>
                     </div>
 
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${station.has_premium ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-400 line-through decoration-1 text-[7px]'}`}>
+                        ພິເສດ
+                      </span>
+                      <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${station.has_regular ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400 line-through decoration-1 text-[7px]'}`}>
+                        ທຳມະດາ
+                      </span>
+                      <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${station.has_diesel ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-400 line-through decoration-1 text-[7px]'}`}>
+                        ກະຊວນ
+                      </span>
+                    </div>
+
                     {distanceStr && (
                       <div className="mt-1 pt-1 border-t border-gray-50 flex items-center justify-between">
                         <span className="text-[9px] text-gray-400">ໄລຍະຫ່າງ</span>
@@ -286,6 +301,18 @@ export default function Map({ user }: { user: User | null }) {
                     {station.approval_status === 'pending' && (
                       <div className="mt-1 bg-orange-50 text-orange-600 text-[9px] py-1 px-2 rounded-md font-bold text-center font-phetsarath">
                         ກຳລັງກວດສອບ
+                      </div>
+                    )}
+                    
+                    {station.updated_at && (
+                      <div className="mt-1 text-center font-phetsarath">
+                        <span className="text-[8px] text-gray-400">ອັບເດດເມື່ອ: {new Date(station.updated_at).toLocaleString('lo-LA', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}</span>
                       </div>
                     )}
                     

@@ -10,6 +10,10 @@ type Station = {
   brand: string | null
   fuel_status: 'available' | 'low' | 'out_of_stock' | 'unknown' | null
   queue_status: 'short' | 'medium' | 'long' | 'unknown' | null
+  updated_at?: string
+  has_premium?: boolean
+  has_regular?: boolean
+  has_diesel?: boolean
 }
 
 type Comment = {
@@ -35,6 +39,9 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
   const [fuelStatus, setFuelStatus] = useState<string>('')
   const [queueStatus, setQueueStatus] = useState<string>('')
   const [isUpdating, setIsUpdating] = useState(false)
+  const [hasPremium, setHasPremium] = useState(false)
+  const [hasRegular, setHasRegular] = useState(false)
+  const [hasDiesel, setHasDiesel] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [comments, setComments] = useState<Comment[]>([])
   const [newComment, setNewComment] = useState('')
@@ -45,6 +52,9 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
     if (station) {
       setFuelStatus(station.fuel_status || 'available')
       setQueueStatus(station.queue_status || 'short')
+      setHasPremium(station.has_premium || false)
+      setHasRegular(station.has_regular || false)
+      setHasDiesel(station.has_diesel || false)
       setError(null)
       fetchComments()
     }
@@ -112,15 +122,22 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
     setError(null)
 
     try {
+      // Determine overall fuel status based on checkboxes
+      const isAnyAvailable = hasPremium || hasRegular || hasDiesel
+      const finalFuelStatus = isAnyAvailable ? 'available' : 'out_of_stock'
+      
       // If out of stock, queue status should be empty (null)
-      const finalQueueStatus = fuelStatus === 'out_of_stock' ? null : queueStatus
+      const finalQueueStatus = finalFuelStatus === 'out_of_stock' ? null : queueStatus
 
       // Update the main station status
       const { error: updateError } = await supabase
         .from('stations')
         .update({
-          fuel_status: fuelStatus,
+          fuel_status: finalFuelStatus,
           queue_status: finalQueueStatus,
+          has_premium: hasPremium,
+          has_regular: hasRegular,
+          has_diesel: hasDiesel,
         })
         .eq('id', station.id)
 
@@ -132,8 +149,11 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
         .insert({
           station_id: station.id,
           user_id: user.id,
-          fuel_status: fuelStatus,
+          fuel_status: finalFuelStatus,
           queue_status: finalQueueStatus,
+          has_premium: hasPremium,
+          has_regular: hasRegular,
+          has_diesel: hasDiesel,
         })
 
       onReportSuccess()
@@ -187,41 +207,68 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
             </div>
           )}
 
-          {/* Fuel Status Select */}
-          <div className="space-y-2">
+          {/* Fuel Type Checkboxes */}
+          <div className="space-y-3">
             <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              ⛽ ສະຖານະນໍ້າມັນ
+              ⛽ ປະເພດນໍ້າມັນທີ່ມີ (Fuel Types)
             </label>
-            <div className="relative group">
-              <select
-                value={fuelStatus}
-                onChange={(e) => setFuelStatus(e.target.value)}
-                disabled={isUpdating}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3.5 pr-10 transition-all hover:bg-white disabled:opacity-50 font-phetsarath"
-              >
-                <option value="available">ມີນ້ຳມັນ (Available)</option>
-                <option value="low">ນ້ຳມັນໜ້ອຍ (Low)</option>
-                <option value="out_of_stock">ນ້ຳມັນໝົດ (Out of Stock)</option>
-              </select>
-              <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400 group-hover:text-gray-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-              </div>
+            <div className="grid grid-cols-1 gap-2 border border-gray-100 p-3 rounded-xl bg-gray-50/50">
+              <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
+                <input 
+                  type="checkbox" 
+                  checked={hasPremium} 
+                  onChange={(e) => setHasPremium(e.target.checked)}
+                  className="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-gray-700">ແອັດຊັງພິເສດ (Premium / 95)</span>
+                  <span className="text-[10px] text-gray-400">ສີແດງ</span>
+                </div>
+              </label>
+              
+              <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
+                <input 
+                  type="checkbox" 
+                  checked={hasRegular} 
+                  onChange={(e) => setHasRegular(e.target.checked)}
+                  className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-gray-700">ແອັດຊັງທຳມະດາ (Regular / 91)</span>
+                  <span className="text-[10px] text-gray-400">ສີຂຽວ</span>
+                </div>
+              </label>
+              
+              <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
+                <input 
+                  type="checkbox" 
+                  checked={hasDiesel} 
+                  onChange={(e) => setHasDiesel(e.target.checked)}
+                  className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm font-bold text-gray-700">ກະຊວນ (Diesel)</span>
+                  <span className="text-[10px] text-gray-400">ສີຟ້າ</span>
+                </div>
+              </label>
             </div>
           </div>
 
+          <div className="h-[1px] bg-gray-100 my-2" />
+
           {/* Queue Status Select */}
-          <div className={`space-y-2 transition-opacity duration-200 ${fuelStatus === 'out_of_stock' ? 'opacity-50' : 'opacity-100'}`}>
+          <div className={`space-y-2 transition-opacity duration-200 ${!(hasPremium || hasRegular || hasDiesel) ? 'opacity-50' : 'opacity-100'}`}>
             <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              👥 ສະຖານະຄິວ {fuelStatus === 'out_of_stock' && '(ບໍ່ມີຄິວ)'}
+              👥 ສະຖານະຄິວ {!(hasPremium || hasRegular || hasDiesel) && '(ບໍ່ມີຄິວ)'}
             </label>
             <div className="relative group">
               <select
-                value={fuelStatus === 'out_of_stock' ? '' : queueStatus}
+                value={!(hasPremium || hasRegular || hasDiesel) ? '' : queueStatus}
                 onChange={(e) => setQueueStatus(e.target.value)}
-                disabled={isUpdating || fuelStatus === 'out_of_stock'}
-                className="w-full appearance-none bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3.5 pr-10 transition-all hover:bg-white disabled:opacity-50"
+                disabled={isUpdating || !(hasPremium || hasRegular || hasDiesel)}
+                className="w-full appearance-none bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3.5 pr-10 transition-all hover:bg-white disabled:opacity-50 font-phetsarath"
               >
-                {fuelStatus === 'out_of_stock' ? (
+                {!(hasPremium || hasRegular || hasDiesel) ? (
                   <option value="">- ບໍ່ມີຄິວ -</option>
                 ) : (
                   <>
@@ -231,7 +278,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                   </>
                 )}
               </select>
-              {fuelStatus !== 'out_of_stock' && (
+              {(hasPremium || hasRegular || hasDiesel) && (
                 <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none text-gray-400 group-hover:text-gray-600">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                 </div>
