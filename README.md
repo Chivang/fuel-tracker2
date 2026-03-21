@@ -1,17 +1,25 @@
 # ⛽ Lao Fuel Tracker (PWA)
 
-A real-time web application to track fuel availability and queue status at gas stations across Laos. Built with a focus on community-driven data and mobile accessibility.
+ເວັບໄຊຕິດຕາມສະຖານະປ້ຳນ້ຳມັນ ແລະ ຄິວໃນລາວແບບ Real-time. ສ້າງຂຶ້ນເພື່ອຊ່ວຍເຫຼືອສັງຄົມໃນການຊອກຫານ້ຳມັນໄດ້ໄວຂຶ້ນ.
 
-## 🚀 Features
-- **Real-time Map:** Interactive map showing gas stations and their current status.
-- **Live Updates:** Instant status changes (Available/Low/Out of Stock) powered by Supabase Realtime.
-- **Smart Search:** Find the nearest gas station using GPS Geolocation.
-- **Secure Reporting:** Google Authentication ensures data reliability.
-- **PWA Ready:** "Add to Home Screen" support for a native app experience on iOS and Android.
+## 🚀 Features (ຄວາມສາມາດຂອງແອັບ)
+- **Real-time Map:** ແຜນທີ່ສະແດງຈຸດປ້ຳນ້ຳມັນ ແລະ ສະຖານະແບບສົດໆ.
+- **Live Updates:** ອັບເດດຂໍ້ມູນໄດ້ທັນທີ (ມີນ້ຳມັນ/ໃກ້ໝົດ/ໝົດ) ຜ່ານ Supabase Realtime.
+- **Find Nearest:** ຄົ້ນຫາປ້ຳທີ່ໃກ້ທີ່ສຸດດ້ວຍ GPS.
+- **PWA Ready:** ສາມາດຕິດຕັ້ງລົງໜ້າມືຖືໄດ້ຄືກັບ App ແທ້.
 
 ## 🛠 Tech Stack
-- **Framework:** Next.js 14 (React)
-- **Styling:** Tailwind CSS
-- **Database/Auth:** Supabase
+- **Framework:** Next.js 14
+- **Database/Auth:** Supabase (Google Auth)
 - **Map:** Leaflet.js
-- **Deployment:** Vercel
+- **Styling:** Tailwind CSS
+
+---
+
+## 💻 Getting Started (ສຳລັບນັກພັດທະນາ)
+
+ທຳອິດ, ຕິດຕັ້ງ dependencies ແລະ run ໂປຣເຈັກໃນເຄື່ອງ:
+
+```bash
+npm install
+npm run dev
