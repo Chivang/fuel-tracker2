@@ -6,6 +6,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { supabase } from '@/utils/supabase'
 import ReportModal from './ReportModal'
+import AddStationModal from './AddStationModal'
 import MapController from './MapController'
 import type { User } from '@supabase/supabase-js'
 
@@ -63,6 +64,8 @@ export default function Map({ user }: { user: User | null }) {
   const [stations, setStations] = useState<Station[]>([])
   const [selectedStation, setSelectedStation] = useState<Station | null>(null)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [tempLatlng, setTempLatlng] = useState<{lat: number, lng: number} | null>(null)
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
   const [isLocating, setIsLocating] = useState(false)
   const [viewedPoints, setViewedPoints] = useState<UserPoints | null>(null)
@@ -106,8 +109,7 @@ export default function Map({ user }: { user: User | null }) {
       const filtered = (data || []).filter((s: any) => {
         if (s.approval_status === 'approved') return true
         if (user && s.created_by === user.id) return true
-        // TEMP: Show ALL during restoral so user sees data
-        return true 
+        return false
       })
       
       console.log(`Displaying ${filtered.length} stations after filtering.`)
@@ -159,24 +161,10 @@ export default function Map({ user }: { user: User | null }) {
     setShowLeaderboard(true)
   }
 
-  const handleAddStation = async (e: any) => {
+  const handleAddStation = (e: any) => {
     if (!user) return alert('ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນ')
-    const latlng = e.latlng
-    const name = window.prompt('ໃສ່ຊື່ສະຖານີ:')
-    if (!name) return
-
-    const { error } = await supabase.from('stations').insert({
-      name,
-      lat: latlng.lat,
-      lng: latlng.lng,
-      fuel_status: 'unknown',
-      queue_status: 'unknown',
-      approval_status: 'pending',
-      created_by: user.id
-    })
-
-    if (error) alert(error.message)
-    else alert('ເພີ່ມສະຖານີແລ້ວ! ລໍຖ້າການອະນຸມັດຈາກ admin.')
+    setTempLatlng(e.latlng)
+    setIsAddModalOpen(true)
   }
 
   function MapEvents() {
@@ -366,6 +354,19 @@ export default function Map({ user }: { user: User | null }) {
           {isLocating ? '...' : '📍'}
         </button>
       </div>
+
+      {isAddModalOpen && tempLatlng && (
+        <AddStationModal
+          lat={tempLatlng.lat}
+          lng={tempLatlng.lng}
+          user={user}
+          onClose={() => setIsAddModalOpen(false)}
+          onSuccess={() => {
+            fetchStations()
+            setIsAddModalOpen(false)
+          }}
+        />
+      )}
 
       {isReportModalOpen && selectedStation && (
         <ReportModal
