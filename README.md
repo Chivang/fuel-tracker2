@@ -42,4 +42,8 @@ npm run dev
   - **Supabase & Vercel:** ຜູ້ໃຫ້ບໍລິການ Backend ແລະ Hosting ທີ່ຍອດຢ້ຽມ.
 
 ---
+<<<<<<< HEAD
 © 2026 Lao Fuel Tracker Project.
+=======
+© 2026 Lao Fuel Tracker Project.
+>>>>>>> c9cef20a66c2578209fa1a4853c728157b4cca81
