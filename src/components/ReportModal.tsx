@@ -165,10 +165,13 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
         .eq('id', user.id)
         .single()
       
-      await supabase
+      const currentPoints = profile?.points || 0
+      const { error: pointsError } = await supabase
         .from('profiles')
-        .update({ points: (profile?.points || 0) + 10 })
+        .update({ points: currentPoints + 10 })
         .eq('id', user.id)
+
+      if (pointsError) console.error('Error awarding points:', pointsError)
       
       fetchUserPoints()
       onClose()

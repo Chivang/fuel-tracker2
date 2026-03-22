@@ -156,7 +156,7 @@ export default function Map({ user }: { user: User | null }) {
   const fetchLeaderboard = async () => {
     const { data } = await supabase
       .from('profiles')
-      .select('email, points')
+      .select('full_name, points')
       .order('points', { ascending: false })
       .limit(10)
     
@@ -451,7 +451,7 @@ export default function Map({ user }: { user: User | null }) {
             <div className="space-y-3">
               {leaderboard.map((u, i) => (
                 <div key={i} className="flex justify-between items-center p-2 border-b">
-                  <span className="text-sm">{i+1}. {u.email.split('@')[0]}</span>
+                  <span className="text-sm">{i+1}. {u.full_name || 'Anonymous'}</span>
                   <span className="font-bold text-green-700">{u.points} pts</span>
                 </div>
               ))}

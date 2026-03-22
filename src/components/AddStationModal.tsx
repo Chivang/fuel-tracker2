@@ -15,7 +15,9 @@ interface AddStationModalProps {
 export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: AddStationModalProps) {
   const [name, setName] = useState('')
   const [brand, setBrand] = useState('')
-  const [fuelStatus, setFuelStatus] = useState('unknown')
+  const [hasPremium, setHasPremium] = useState(false)
+  const [hasRegular, setHasRegular] = useState(false)
+  const [hasDiesel, setHasDiesel] = useState(false)
   const [queueStatus, setQueueStatus] = useState('unknown')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -29,22 +31,51 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
     setError(null)
 
     try {
-      const { error: insertError } = await supabase.from('stations').insert({
+      const isAnyAvailable = hasPremium || hasRegular || hasDiesel
+      const finalFuelStatus = isAnyAvailable ? 'available' : 'out_of_stock'
+
+      const { data: stationData, error: insertError } = await supabase.from('stations').insert({
         name: name.trim(),
         brand: brand.trim() || null,
         lat,
         lng,
-        fuel_status: fuelStatus,
+        fuel_status: finalFuelStatus,
         queue_status: queueStatus,
         approval_status: 'pending',
-        created_by: user.id
-      })
+        created_by: user.id,
+        has_premium: hasPremium,
+        has_regular: hasRegular,
+        has_diesel: hasDiesel
+      }).select().single()
 
       if (insertError) throw insertError
 
+      // Record this in reports table too
+      await supabase.from('reports').insert({
+        station_id: stationData.id,
+        user_id: user.id,
+        fuel_status: finalFuelStatus,
+        queue_status: queueStatus,
+        has_premium: hasPremium,
+        has_regular: hasRegular,
+        has_diesel: hasDiesel
+      })
+
+      // Increment points (+20 for new station)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('points')
+        .eq('id', user.id)
+        .single()
+      
+      await supabase
+        .from('profiles')
+        .update({ points: (profile?.points || 0) + 20 })
+        .eq('id', user.id)
+
       onSuccess()
       onClose()
-      alert('ເພີ່ມສະຖານີແລ້ວ! ລໍຖ້າການອະນຸມັດຈາກ admin.')
+      alert('ເພີ່ມສະຖານີແລ້ວ! (+20 ຄະແນນ) ລໍຖ້າການອະນຸມັດຈາກ admin.')
     } catch (err: any) {
       setError(err.message || 'ເກີດຂໍ້ຜິດພາດ')
     } finally {
@@ -102,29 +133,52 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {/* Fuel Status */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold text-gray-600 px-1">ສະຖານະນໍ້າມັນ</label>
-              <select
-                value={fuelStatus}
-                onChange={(e) => setFuelStatus(e.target.value)}
-                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900"
-              >
-                <option value="available">ມີນໍ້າມັນ</option>
-                <option value="low">ນໍ້າມັນໜ້ອຍ</option>
-                <option value="out_of_stock">ນໍ້າມັນໝົດ</option>
-                <option value="unknown">ບໍ່ມີຂໍ້ມູນ</option>
-              </select>
+          <div className="space-y-4">
+            {/* Fuel Type Checkboxes */}
+            <div className="space-y-3">
+              <label className="text-xs font-bold text-gray-600 px-1 flex items-center gap-2">
+                ⛽ ປະເພດນໍ້າມັນທີ່ມີ
+              </label>
+              <div className="grid grid-cols-1 gap-2 border border-gray-100 p-3 rounded-xl bg-gray-50/50">
+                <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    checked={hasPremium} 
+                    onChange={(e) => setHasPremium(e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
+                  />
+                  <span className="text-xs font-bold text-gray-700">ແອັດຊັງພິເສດ (Premium / 95)</span>
+                </label>
+                
+                <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    checked={hasRegular} 
+                    onChange={(e) => setHasRegular(e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer"
+                  />
+                  <span className="text-xs font-bold text-gray-700">ແອັດຊັງທຳມະດາ (Regular / 91)</span>
+                </label>
+                
+                <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
+                  <input 
+                    type="checkbox" 
+                    checked={hasDiesel} 
+                    onChange={(e) => setHasDiesel(e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                  />
+                  <span className="text-xs font-bold text-gray-700">ກະຊວນ (Diesel)</span>
+                </label>
+              </div>
             </div>
 
-            {/* Queue Status */}
+            {/* Queue Status Select */}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-gray-600 px-1">ສະຖານະຄິວ</label>
               <select
                 value={queueStatus}
                 onChange={(e) => setQueueStatus(e.target.value)}
-                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900"
+                className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900 font-phetsarath"
               >
                 <option value="short">ຄິວນ້ອຍ</option>
                 <option value="medium">ຄິວປານກາງ</option>
