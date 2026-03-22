@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
       {/* Header */}
       <header className="bg-green-700 py-6 px-4 shadow-md">
         <div className="max-w-4xl mx-auto flex items-center gap-4">
-          <Link 
+          <Link
             href="/"
             className="text-white hover:text-green-200 transition-colors"
           >
@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
             </svg>
           </Link>
           <h1 className="text-xl sm:text-2xl font-bold text-white uppercase tracking-wide">
-            {t('common.privacy_policy')} - Fuel Tracker
+            {t('privacy.title')} - Fuel Tracker
           </h1>
         </div>
       </header>
@@ -28,71 +28,71 @@ export default function PrivacyPolicy() {
       {/* Content */}
       <main className="max-w-4xl mx-auto py-10 px-6 sm:px-8">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 sm:p-10 space-y-8">
-          
+
           <section className="space-y-4 text-gray-700 leading-relaxed">
             <h2 className="text-xl font-bold text-green-800 border-b pb-2">
-              1. {t('common.privacy_policy')}
+              {t('privacy.intro_title')}
             </h2>
             <p className="indent-4">
-              Fuel Tracker ("we", "us", or "our") operates the Fuel Tracker application. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our service.
+              {t('privacy.intro_text')}
             </p>
           </section>
 
           <section className="space-y-4 text-gray-700 leading-relaxed">
             <h2 className="text-xl font-bold text-green-800 border-b pb-2">
-              2. Information Collection and Use
+              {t('privacy.collection_title')}
             </h2>
             <p className="indent-4">
-              We collect information only for authentication and to improve your experience. When you log in with Google or Facebook, we receive:
+              {t('privacy.collection_text')}
             </p>
             <ul className="list-disc list-inside ml-6 space-y-2">
-              <li><strong>User Email Address:</strong> Used strictly for identifying your account and unique reports.</li>
-              <li><strong>Profile Name:</strong> Used to display your name on reports or leaderboards (if opted-in).</li>
+              <li><strong>{t('privacy.collection_email').split(':')[0]}:</strong>{t('privacy.collection_email').split(':')[1]}</li>
+              <li><strong>{t('privacy.collection_name').split(':')[0]}:</strong>{t('privacy.collection_name').split(':')[1]}</li>
             </ul>
             <p className="indent-4">
-              We do <strong>not</strong> sell, trade, or transfer your personal information to outside parties.
+              {t('privacy.collection_footer')}
             </p>
           </section>
 
           <section className="space-y-4 text-gray-700 leading-relaxed">
             <h2 className="text-xl font-bold text-green-800 border-b pb-2">
-              3. Data Deletion
+              {t('privacy.deletion_title')}
             </h2>
             <p className="indent-4">
-              We respect your right to privacy and control over your data.
+              {t('privacy.deletion_text1')}
             </p>
             <p className="indent-4">
-              Users can request the full removal of their account data, including email, profile name, and all associated reports, by contacting the administrator via the support channels provided in the app (e.g., via the Support button or messaging).
+              {t('privacy.deletion_text2')}
             </p>
             <p className="indent-4">
-              Alternatively, you can contact us directly to initiate a data deletion request. Once requested, your data will be permanently deleted from our records within 7 business days.
+              {t('privacy.deletion_text3')}
             </p>
           </section>
 
           <section className="space-y-4 text-gray-700 leading-relaxed">
             <h2 className="text-xl font-bold text-green-800 border-b pb-2">
-              4. Security
+              {t('privacy.security_title')}
             </h2>
             <p className="indent-4">
-              The security of your data is important to us, and we strive to use commercially acceptable means to protect your personal information. However, no method of transmission over the Internet or method of electronic storage is 100% secure.
+              {t('privacy.security_text')}
             </p>
           </section>
 
           <section className="space-y-4 text-gray-700 leading-relaxed">
             <h2 className="text-xl font-bold text-green-800 border-b pb-2">
-              5. Changes to This Privacy Policy
+              {t('privacy.changes_title')}
             </h2>
             <p className="indent-4">
-              We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
+              {t('privacy.changes_text')}
             </p>
           </section>
 
           <div className="pt-8 border-t text-center">
-            <Link 
+            <Link
               href="/"
               className="inline-flex items-center justify-center px-6 py-2 bg-green-700 text-white rounded-lg font-bold hover:bg-green-800 transition-colors shadow-sm"
             >
-              Back to App
+              {t('privacy.back_to_app')}
             </Link>
           </div>
         </div>

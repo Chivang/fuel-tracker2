@@ -104,5 +104,24 @@
     "ldb_bank": "LDB Bank",
     "download_qr": "Download QR Code",
     "thank_you": "Thank you for your support! Every donation will be used to maintain the system."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro_title": "1. Privacy Policy",
+    "intro_text": "Fuel Tracker (\"we\", \"us\", or \"our\") operates the Fuel Tracker application. This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our service.",
+    "collection_title": "2. Information Collection and Use",
+    "collection_text": "We collect information only for authentication and to improve your experience. When you log in with Google or Facebook, we receive:",
+    "collection_email": "User Email Address: Used strictly for identifying your account and unique reports.",
+    "collection_name": "Profile Name: Used to display your name on reports or leaderboards (if opted-in).",
+    "collection_footer": "We do not sell, trade, or transfer your personal information to outside parties.",
+    "deletion_title": "3. Data Deletion",
+    "deletion_text1": "We respect your right to privacy and control over your data.",
+    "deletion_text2": "Users can request the full removal of their account data, including email, profile name, and all associated reports, by contacting the administrator via WhatsApp: 02077762078 or Email: chivang.ch@gmail.com.",
+    "deletion_text3": "Alternatively, you can contact us directly to initiate a data deletion request. Once requested, your data will be permanently deleted from our records within 7 business days.",
+    "security_title": "4. Security",
+    "security_text": "The security of your data is important to us, and we strive to use commercially acceptable means to protect your personal information. However, no method of transmission over the Internet or method of electronic storage is 100% secure.",
+    "changes_title": "5. Changes to This Privacy Policy",
+    "changes_text": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.",
+    "back_to_app": "Back to App"
   }
 }
