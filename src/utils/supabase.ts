@@ -5,7 +5,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    // Use implicit flow so OAuth callbacks work without a server /auth/callback route
-    flowType: 'implicit',
+    // Use PKCE flow for secure server-side code exchange
+    flowType: 'pkce',
   },
 })

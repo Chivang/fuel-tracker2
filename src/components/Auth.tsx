@@ -32,10 +32,11 @@ export default function Auth({ onUserChange }: { onUserChange: (user: User | nul
   }, [onUserChange])
 
   const handleGoogleLogin = async () => {
+    const callbackUrl = `${window.location.origin}/auth/v1/callback`
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: callbackUrl,
       },
     })
 
@@ -45,10 +46,11 @@ export default function Auth({ onUserChange }: { onUserChange: (user: User | nul
   }
 
   const handleFacebookLogin = async () => {
+    const callbackUrl = `${window.location.origin}/auth/v1/callback`
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
-        redirectTo: 'https://vajsiab.eu/auth/v1/callback',
+        redirectTo: callbackUrl,
       },
     })
 
