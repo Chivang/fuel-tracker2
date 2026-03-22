@@ -43,3 +43,35 @@ body {
 .leaflet-popup-content-wrapper, .leaflet-popup-content {
   font-family: var(--font-phetsarath), sans-serif !important;
 }
+
+/* Custom Map Controls Positioning */
+.leaflet-top.leaflet-right {
+  margin-top: 5rem !important; /* Move down to clear header */
+  margin-right: 0.5rem !important;
+}
+
+.leaflet-control-layers {
+  border-radius: 1rem !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px);
+}
+
+.leaflet-control-layers-toggle {
+  width: 44px !important;
+  height: 44px !important;
+  background-size: 24px 24px !important;
+}
+
+.leaflet-control-layers-expanded {
+  padding: 1rem !important;
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+}
+
+.leaflet-control-layers-base label {
+  margin: 0.5rem 0 !important;
+}
