@@ -418,7 +418,10 @@ export default function Map({ user }: { user: User | null }) {
                   <div className="flex gap-2">
                     <button 
                       onClick={async () => {
-                        await supabase.from('stations').update({ approval_status: 'approved' }).eq('id', s.id)
+                        await supabase.from('stations').update({ 
+                          status: 'approved',
+                          approval_status: 'approved' 
+                        }).eq('id', s.id)
                         fetchStations()
                       }}
                       className="px-3 py-1 bg-green-500 text-white text-xs rounded"
@@ -427,7 +430,10 @@ export default function Map({ user }: { user: User | null }) {
                     </button>
                     <button 
                       onClick={async () => {
-                        await supabase.from('stations').update({ approval_status: 'rejected' }).eq('id', s.id)
+                        await supabase.from('stations').update({ 
+                          status: 'rejected',
+                          approval_status: 'rejected' 
+                        }).eq('id', s.id)
                         fetchStations()
                       }}
                       className="px-3 py-1 bg-red-500 text-white text-xs rounded"
