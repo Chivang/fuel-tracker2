@@ -32,11 +32,18 @@ export default function Auth({ onUserChange }: { onUserChange: (user: User | nul
   }, [onUserChange])
 
   const handleGoogleLogin = async () => {
-    const callbackUrl = `${window.location.origin}/auth/v1/callback`
+    // Determine the base URL: prefer the current origin for dev/staging, but redirect to the callback
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://vajsiab.eu'
+    const callbackUrl = `${origin}/auth/v1/callback`
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: callbackUrl,
+        queryParams: {
+          prompt: 'select_account',
+          access_type: 'offline',
+        },
       },
     })
 
@@ -46,7 +53,10 @@ export default function Auth({ onUserChange }: { onUserChange: (user: User | nul
   }
 
   const handleFacebookLogin = async () => {
-    const callbackUrl = `${window.location.origin}/auth/v1/callback`
+    // Facebook specifically redirects back with #_=_ which we handle in our callback route
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://vajsiab.eu'
+    const callbackUrl = `${origin}/auth/v1/callback`
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
