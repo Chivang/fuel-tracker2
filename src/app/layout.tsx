@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Phetsarath } from "next/font/google";
+import { LanguageProvider } from "@/i18n/LanguageContext";
 import "./globals.css";
 
 const phetsarath = Phetsarath({
@@ -46,27 +47,9 @@ export default function RootLayout({
         className="min-h-full flex flex-col font-phetsarath overflow-x-hidden selection:bg-green-100 selection:text-green-900"
         suppressHydrationWarning
       >
-        {children}
-      {/*
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js').then(
-                    function(registration) {
-                      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    },
-                    function(err) {
-                      console.log('ServiceWorker registration failed: ', err);
-                    }
-                  );
-                });
-              }
-            `,
-          }}
-        />
-      */}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import ReportModal from './ReportModal'
 import AddStationModal from './AddStationModal'
 import MapController from './MapController'
 import type { User } from '@supabase/supabase-js'
+import { useLanguage } from '@/i18n/LanguageContext'
 
 // --- Types ---
 interface Station {
@@ -75,6 +76,23 @@ export default function Map({ user }: { user: User | null }) {
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showLeaderboard, setShowLeaderboard] = useState(false)
   const [leaderboard, setLeaderboard] = useState<any[]>([])
+  const { t, language } = useLanguage()
+
+  // Format date helper
+  const formatDate = (dateString: string) => {
+    try {
+      if (!dateString) return t('queue.unknown')
+      const date = new Date(dateString)
+      return date.toLocaleString(language === 'lo' ? 'lo-LA' : 'en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    } catch (e) {
+      return dateString
+    }
+  }
 
   // Load Map logic
   useEffect(() => {
@@ -165,7 +183,7 @@ export default function Map({ user }: { user: User | null }) {
   }
 
   const handleAddStation = (e: any) => {
-    if (!user) return alert('ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນ')
+    if (!user) return alert(t('map.login_required'))
     setTempLatlng(e.latlng)
     setIsAddModalOpen(true)
   }
@@ -180,7 +198,7 @@ export default function Map({ user }: { user: User | null }) {
   if (!isMounted) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-gray-100">
-        <p>ກຳລັງໂຫລດແຜນທີ່...</p>
+        <p>{t('map.loading_map')}</p>
       </div>
     )
   }
@@ -213,8 +231,8 @@ export default function Map({ user }: { user: User | null }) {
 
         {stations.length === 0 && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[2000] bg-white/80 backdrop-blur-md px-6 py-4 rounded-3xl shadow-2xl border border-white/20 text-center">
-            <p className="text-gray-800 font-bold">ບໍ່ພົບຂໍ້ມູນສະຖານີ</p>
-            <p className="text-gray-500 text-xs mt-1">(ກະລຸນາລອງໃໝ່ ຫຼື ເພີ່ມສະຖານີໃໝ່)</p>
+            <p className="text-gray-800 font-bold">{t('map.no_stations_found')}</p>
+            <p className="text-gray-500 text-xs mt-1">{t('map.try_again_or_add')}</p>
           </div>
         )}
 
@@ -258,66 +276,56 @@ export default function Map({ user }: { user: User | null }) {
                     
                     <div className="grid grid-cols-2 gap-2 text-[10px]">
                       <div>
-                        <p className="text-gray-400 uppercase font-bold tracking-tighter">ນໍ້າມັນ</p>
+                        <p className="text-gray-400 uppercase font-bold tracking-tighter">{t('map.fuel_status')}</p>
                         <p className={`font-bold ${
                           station.fuel_status === 'available' ? 'text-green-600' : 
                           station.fuel_status === 'low' ? 'text-orange-500' : 
                           station.fuel_status === 'out_of_stock' ? 'text-red-500' : 'text-gray-500'
                         }`}>
-                          {station.fuel_status === 'available' ? 'ມີນໍ້າມັນ' : 
-                           station.fuel_status === 'low' ? 'ນໍ້າມັນໜ້ອຍ' : 
-                           station.fuel_status === 'out_of_stock' ? 'ນໍ້າມັນໝົດ' : 'ບໍ່ມີຂໍ້ມູນ'}
+                          {t(`fuel_status.${station.fuel_status}`)}
                         </p>
                       </div>
                       <div>
-                        <p className="text-gray-400 uppercase font-bold tracking-tighter">ຄິວ</p>
+                        <p className="text-gray-400 uppercase font-bold tracking-tighter">{t('map.queue_status')}</p>
                         <p className="font-bold text-gray-700 capitalize">
-                          {station.queue_status === 'short' ? 'ຄິວນ້ອຍ' :
-                           station.queue_status === 'medium' ? 'ຄິວປານກາງ' :
-                           station.queue_status === 'long' ? 'ຄິວຍາວ' : 'ບໍ່ມີຂໍ້ມູນ'}
+                          {t(`queue.${station.queue_status}`)}
                         </p>
                       </div>
                     </div>
 
                     <div className="mt-2 flex flex-wrap gap-1">
                       <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${station.has_premium ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-400 line-through decoration-1 text-[7px]'}`}>
-                        ພິເສດ
+                        {t('fuel_type.premium')}
                       </span>
                       <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${station.has_regular ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400 line-through decoration-1 text-[7px]'}`}>
-                        ທຳມະດາ
+                        {t('fuel_type.regular')}
                       </span>
                       <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${station.has_diesel ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-400 line-through decoration-1 text-[7px]'}`}>
-                        ກະຊວນ
+                        {t('fuel_type.diesel')}
                       </span>
                     </div>
 
                     {distanceStr && (
                       <div className="mt-1 pt-1 border-t border-gray-50 flex items-center justify-between">
-                        <span className="text-[9px] text-gray-400">ໄລຍະຫ່າງ</span>
+                        <span className="text-[9px] text-gray-400">{t('map.distance')}</span>
                         <span className="text-[10px] font-bold text-blue-600">📍 {distanceStr}</span>
                       </div>
                     )}
 
                     {station.approval_status === 'pending' && (
                       <div className="mt-1 bg-orange-50 text-orange-600 text-[9px] py-1 px-2 rounded-md font-bold text-center font-phetsarath">
-                        ກຳລັງກວດສອບ
+                        {t('map.pending_approval')}
                       </div>
                     )}
                     
                     {station.updated_at && (
                       <div className="mt-1 text-center font-phetsarath">
-                        <span className="text-[8px] text-gray-400">ອັບເດດເມື່ອ: {new Date(station.updated_at).toLocaleString('lo-LA', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}</span>
+                        <span className="text-[8px] text-gray-400">{t('map.updated_at')}: {formatDate(station.updated_at)}</span>
                       </div>
                     )}
                     
                     <button className="mt-2 w-full py-1.5 bg-green-50 text-green-700 text-[10px] font-bold rounded-lg border border-green-100 hover:bg-green-100 transition-colors">
-                      ຄລິກເພື່ອລາຍງານ
+                      {t('map.click_to_report')}
                     </button>
                   </div>
                 </div>
@@ -333,13 +341,13 @@ export default function Map({ user }: { user: User | null }) {
 
       {/* Legend */}
       <div className="absolute top-20 left-4 z-[1000] bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-xl border border-white/20 font-phetsarath">
-        <h4 className="text-[10px] uppercase tracking-wider font-bold text-gray-400 mb-2">ສັນຍະລັກ</h4>
+        <h4 className="text-[10px] uppercase tracking-wider font-bold text-gray-400 mb-2">{t('map.legend')}</h4>
         <div className="space-y-2">
           {Object.entries(STATUS_COLORS).map(([status, color]) => (
             <div key={status} className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
               <span className="text-[10px] font-bold text-gray-600 capitalize">
-                {status === 'available' ? 'ມີນໍ້າມັນ' : status === 'low' ? 'ນໍ້າມັນໜ້ອຍ' : status === 'out_of_stock' ? 'ນໍ້າມັນໝົດ' : 'ບໍ່ມີຂໍ້ມູນ'}
+                {t(`fuel_status.${status}`)}
               </span>
             </div>
           ))}
@@ -350,7 +358,7 @@ export default function Map({ user }: { user: User | null }) {
       <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none">
         <div className="bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg">
           <p className="text-white text-[10px] font-bold tracking-wide font-phetsarath flex items-center gap-2">
-            <span>🖱️ ກົດຄ້າງໄວ້ເພື່ອເພີ່ມປ້ຳໃໝ່</span>
+            <span>{t('map.add_station_hint')}</span>
           </p>
         </div>
       </div>
@@ -361,7 +369,7 @@ export default function Map({ user }: { user: User | null }) {
           <button
             onClick={() => setShowAdminPanel(true)}
             className="p-3 bg-red-600 text-white rounded-full shadow-xl hover:bg-red-700 transition-all font-bold"
-            title="ແຜງຄວບຄຸມ Admin"
+            title={t('map.admin_panel')}
           >
             ⚙️
           </button>
@@ -369,7 +377,7 @@ export default function Map({ user }: { user: User | null }) {
         <button
           onClick={fetchLeaderboard}
           className="p-3 bg-yellow-500 text-white rounded-full shadow-xl hover:bg-yellow-600 transition-all font-bold"
-          title="ຕາຕະລາງຄະແນນ"
+          title={t('navbar.leaderboard')}
         >
           🏆
         </button>
@@ -407,7 +415,7 @@ export default function Map({ user }: { user: User | null }) {
       {showAdminPanel && (
         <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[80vh] overflow-auto">
-            <h2 className="text-xl font-bold mb-4 font-phetsarath">Admin: ສະຖານີທີ່ລໍຖ້າການກວດສອບ</h2>
+            <h2 className="text-xl font-bold mb-4 font-phetsarath">{t('map.admin_pending_stations')}</h2>
             <div className="space-y-4 font-phetsarath">
               {stations.filter(s => s.approval_status === 'pending').map(s => (
                 <div key={s.id} className="p-3 border rounded-lg flex justify-between items-center">
@@ -419,32 +427,30 @@ export default function Map({ user }: { user: User | null }) {
                     <button 
                       onClick={async () => {
                         await supabase.from('stations').update({ 
-                          status: 'approved',
                           approval_status: 'approved' 
                         }).eq('id', s.id)
                         fetchStations()
                       }}
                       className="px-3 py-1 bg-green-500 text-white text-xs rounded"
                     >
-                      ອະນຸມັດ
+                      {t('map.approve')}
                     </button>
                     <button 
                       onClick={async () => {
                         await supabase.from('stations').update({ 
-                          status: 'rejected',
                           approval_status: 'rejected' 
                         }).eq('id', s.id)
                         fetchStations()
                       }}
                       className="px-3 py-1 bg-red-500 text-white text-xs rounded"
                     >
-                      ປະຕິເສດ
+                      {t('map.reject')}
                     </button>
                   </div>
                 </div>
               ))}
             </div>
-            <button onClick={() => setShowAdminPanel(false)} className="mt-6 w-full py-2 bg-gray-200 rounded-lg">ປິດ</button>
+            <button onClick={() => setShowAdminPanel(false)} className="mt-6 w-full py-2 bg-gray-200 rounded-lg">{t('common.close')}</button>
           </div>
         </div>
       )}
@@ -453,7 +459,7 @@ export default function Map({ user }: { user: User | null }) {
       {showLeaderboard && (
         <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-sm p-6 font-phetsarath">
-            <h2 className="text-xl font-bold mb-4 text-center">🏆 ຕາຕະລາງຄະແນນ</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">🏆 {t('navbar.leaderboard')}</h2>
             <div className="space-y-3">
               {leaderboard.map((u, i) => (
                 <div key={i} className="flex justify-between items-center p-2 border-b">

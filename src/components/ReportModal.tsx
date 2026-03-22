@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import type { User } from '@supabase/supabase-js'
+import { useLanguage } from '@/i18n/LanguageContext'
 
 type Station = {
   id: string
@@ -36,6 +37,7 @@ interface ReportModalProps {
 }
 
 export default function ReportModal({ station, user, onClose, onReportSuccess }: ReportModalProps) {
+  const { t } = useLanguage()
   const [fuelStatus, setFuelStatus] = useState<string>('')
   const [queueStatus, setQueueStatus] = useState<string>('')
   const [isUpdating, setIsUpdating] = useState(false)
@@ -176,7 +178,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
       fetchUserPoints()
       onClose()
     } catch (err: any) {
-      setError(err.message || 'ເກີດຂໍ້ຜິດພາດໃນການອັບເດດ')
+      setError(err.message || t('common.error'))
     } finally {
       setIsUpdating(false)
     }
@@ -213,7 +215,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
           {/* Fuel Type Checkboxes */}
           <div className="space-y-3">
             <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              ⛽ ປະເພດນໍ້າມັນທີ່ມີ (Fuel Types)
+              ⛽ {t('add_station.fuel_types')}
             </label>
             <div className="grid grid-cols-1 gap-2 border border-gray-100 p-3 rounded-xl bg-gray-50/50">
               <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
@@ -224,8 +226,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                   className="w-5 h-5 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
                 />
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-gray-700">ແອັດຊັງພິເສດ (Premium / 95)</span>
-                  <span className="text-[10px] text-gray-400">ສີແດງ</span>
+                  <span className="text-sm font-bold text-gray-700">{t('map.premium')} (Premium / 95)</span>
                 </div>
               </label>
               
@@ -237,8 +238,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                   className="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer"
                 />
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-gray-700">ແອັດຊັງທຳມະດາ (Regular / 91)</span>
-                  <span className="text-[10px] text-gray-400">ສີຂຽວ</span>
+                  <span className="text-sm font-bold text-gray-700">{t('map.regular')} (Regular / 91)</span>
                 </div>
               </label>
               
@@ -250,8 +250,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                   className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                 />
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-gray-700">ກະຊວນ (Diesel)</span>
-                  <span className="text-[10px] text-gray-400">ສີຟ້າ</span>
+                  <span className="text-sm font-bold text-gray-700">{t('map.diesel')} (Diesel)</span>
                 </div>
               </label>
             </div>
@@ -262,7 +261,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
           {/* Queue Status Select */}
           <div className={`space-y-2 transition-opacity duration-200 ${!(hasPremium || hasRegular || hasDiesel) ? 'opacity-50' : 'opacity-100'}`}>
             <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              👥 ສະຖານະຄິວ {!(hasPremium || hasRegular || hasDiesel) && '(ບໍ່ມີຄິວ)'}
+              👥 {t('report.queue_label')} {!(hasPremium || hasRegular || hasDiesel) && `(${t('queue.unknown')})`}
             </label>
             <div className="relative group">
               <select
@@ -272,12 +271,12 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                 className="w-full appearance-none bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3.5 pr-10 transition-all hover:bg-white disabled:opacity-50 font-phetsarath"
               >
                 {!(hasPremium || hasRegular || hasDiesel) ? (
-                  <option value="">- ບໍ່ມີຄິວ -</option>
+                  <option value="">- {t('report.queue_none')} -</option>
                 ) : (
                   <>
-                    <option value="short">ຄິວນ້ອຍ (Short)</option>
-                    <option value="medium">ຄິວປານກາງ (Medium)</option>
-                    <option value="long">ຄິວຍາວ (Long)</option>
+                    <option value="short">{t('queue.short')}</option>
+                    <option value="medium">{t('queue.medium')}</option>
+                    <option value="long">{t('queue.long')}</option>
                   </>
                 )}
               </select>
@@ -291,7 +290,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
 
           {!user && (
             <p className="text-xs text-orange-600 bg-orange-50 p-3 rounded-lg text-center font-medium">
-              ⚠️ ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນການລາຍງານ
+              {t('report.login_required')}
             </p>
           )}
 
@@ -303,7 +302,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
               disabled={isUpdating}
               className="flex-1 px-4 py-3 text-sm font-bold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 active:scale-95 transition-all disabled:opacity-50"
             >
-              ຍົກເລີກ
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
@@ -313,10 +312,10 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
               {isUpdating ? (
                 <>
                   <div className="h-4 w-4 border-2 border-white border-t-transparent animate-spin rounded-full"></div>
-                  ກຳລັງບັນທຶກ...
+                  {t('common.submitting')}
                 </>
               ) : (
-                'ສົ່ງລາຍງານ'
+                t('report.send_report')
               )}
             </button>
           </div>
@@ -326,11 +325,11 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
         <div className="p-6 border-t border-gray-100 bg-gray-50/50">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-              💬 ຄວາມຄິດເຫັນ ({comments.length})
+              💬 {t('report.comments_title')} ({comments.length})
             </h3>
             {user && (
               <span className="text-[10px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded-lg">
-                🏆 ຄະແນນຂອງທ່ານ: {userPoints}
+                🏆 {t('report.your_points')}: {userPoints}
               </span>
             )}
           </div>
@@ -354,7 +353,7 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
               </div>
             ))}
             {comments.length === 0 && (
-              <p className="text-xs text-center text-gray-400 py-4 italic">ຍັງບໍ່ມີຄວາມຄິດເຫັນ</p>
+              <p className="text-xs text-center text-gray-400 py-4 italic">{t('report.no_comments')}</p>
             )}
           </div>
 
@@ -362,10 +361,10 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="ສະແດງຄວາມຄິດເຫັນ..."
+                placeholder={t('report.comment_input_placeholder')}
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                className="flex-1 text-xs p-2.5 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none"
+                className="flex-1 text-xs p-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 outline-none text-gray-900 font-medium placeholder:text-gray-400 shadow-sm"
               />
               <button
                 onClick={async () => {
@@ -399,11 +398,11 @@ export default function ReportModal({ station, user, onClose, onReportSuccess }:
                 disabled={isSubmittingComment || !newComment.trim()}
                 className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs font-bold hover:bg-green-700 transition-colors disabled:opacity-50"
               >
-                {isSubmittingComment ? '...' : 'ສົ່ງ'}
+                {isSubmittingComment ? '...' : t('report.send_comment')}
               </button>
             </div>
           ) : (
-            <p className="text-[10px] text-center text-gray-400">ເຂົ້າສູ່ລະບົບເພື່ອສະແດງຄວາມຄິດເຫັນ</p>
+            <p className="text-[10px] text-center text-gray-400">{t('report.login_to_comment')}</p>
           )}
         </div>
       </div>

@@ -1,0 +1,108 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "close": "Close",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "add": "Add",
+    "adding": "Adding...",
+    "success": "Success",
+    "error": "Error",
+    "anonymous": "Anonymous",
+    "points": "Points",
+    "support_dev": "Support Developer",
+    "buy_me_coffee": "Buy Me a Coffee",
+    "privacy_policy": "Privacy Policy"
+  },
+  "navbar": {
+    "title": "Lao Fuel Tracker",
+    "subtitle": "Fuel stations near you",
+    "login": "Login",
+    "login_google": "Login with Google",
+    "login_facebook": "Login with Facebook",
+    "logout": "Logout",
+    "leaderboard": "Leaderboard"
+  },
+  "map": {
+    "search_placeholder": "Search stations...",
+    "loading_map": "Loading map...",
+    "login_required": "Please login first",
+    "no_stations_found": "No stations found",
+    "try_again_or_add": "(Please try again or add a new station)",
+    "filter_all": "All",
+    "filter_available": "Available",
+    "filter_out_of_stock": "Out of Stock",
+    "filter_pending": "Pending Stations",
+    "updated_at": "Updated at",
+    "distance": "Distance",
+    "queue_status": "Queue Status",
+    "fuel_status": "Fuel Status",
+    "report_status": "Report Status",
+    "approve": "Approve",
+    "reject": "Reject",
+    "premium": "Premium",
+    "regular": "Regular",
+    "diesel": "Diesel",
+    "pending_approval": "Pending Approval",
+    "click_to_report": "Click to report",
+    "legend": "Legend",
+    "add_station_hint": "🖱️ Long press to add a new station",
+    "admin_panel": "Admin Panel",
+    "admin_pending_stations": "Admin: Pending Stations"
+  },
+  "report": {
+    "title": "Report Status",
+    "fuel_availability": "Fuel Availability",
+    "queue_label": "Queue Status",
+    "queue_none": "- No Queue -",
+    "login_required": "⚠️ Please login before reporting",
+    "comments_title": "Comments",
+    "no_comments": "No comments yet",
+    "comment_input_placeholder": "Write a comment...",
+    "login_to_comment": "Login to leave a comment",
+    "comment_placeholder": "Comment (optional)",
+    "your_points": "Your Points",
+    "history": "Report History",
+    "no_history": "No history yet",
+    "points_earned": "Reported! (+10 pts)",
+    "send_report": "Send Report",
+    "send_comment": "Send"
+  },
+  "add_station": {
+    "title": "Add New Station",
+    "subtitle": "Please enter station details",
+    "name_label": "Station Name",
+    "brand_label": "Brand (optional)",
+    "brand_placeholder": "e.g. PTT, Plus, PetroTrade",
+    "fuel_types": "Available Fuel Types",
+    "submit_button": "Add Station",
+    "success_message": "Station added! (+20 pts) Waiting for admin approval."
+  },
+  "fuel_status": {
+    "available": "Available",
+    "low": "Low",
+    "out_of_stock": "Out of Stock",
+    "unknown": "Unknown"
+  },
+  "fuel_type": {
+    "premium": "Premium",
+    "regular": "Regular",
+    "diesel": "Diesel"
+  },
+  "queue": {
+    "short": "Short",
+    "medium": "Medium",
+    "long": "Long",
+    "unknown": "No info/No queue"
+  },
+  "support": {
+    "title": "Buy us a coffee",
+    "explanation": "Running this system involves costs such as servers, SMS verification, cloud storage for images, domain, and more. If you find this system useful, your support will help us maintain it and keep it free for everyone. 🙏",
+    "scan_qr": "Scan QR to donate — every amount matters",
+    "bcel_one": "BCEL One",
+    "ldb_bank": "LDB Bank",
+    "download_qr": "Download QR Code",
+    "thank_you": "Thank you for your support! Every donation will be used to maintain the system."
+  }
+}

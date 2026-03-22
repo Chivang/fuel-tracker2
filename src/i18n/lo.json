@@ -1,0 +1,108 @@
+{
+  "common": {
+    "loading": "ກຳລັງໂຫລດ...",
+    "close": "ປິດ",
+    "cancel": "ຍົກເລີກ",
+    "submit": "ສົ່ງຂໍ້ມູນ",
+    "submitting": "ກຳລັງສົ່ງ...",
+    "add": "ເພີ່ມ",
+    "adding": "ກຳລັງເພີ່ມ...",
+    "success": "ສຳເລັດ",
+    "error": "ເກີດຂໍ້ຜິດພາດ",
+    "anonymous": "ບໍ່ລະບຸຊື່",
+    "points": "ຄະແນນ",
+    "support_dev": "ສະຫນັບສະຫນູນຜູ້ພັດທະນາ",
+    "buy_me_coffee": "ລ້ຽງກາເຟຂ້ອຍ",
+    "privacy_policy": "ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"
+  },
+  "navbar": {
+    "title": "ຕິດຕາມນໍ້າມັນລາວ",
+    "subtitle": "ສະຖານີນໍ້າມັນໃກ້ທ່ານ",
+    "login": "ເຂົ້າສູ່ລະບົບ",
+    "login_google": "ເຂົ້າສູ່ລະບົບດ້ວຍ Google",
+    "login_facebook": "ເຂົ້າສູ່ລະບົບດ້ວຍ Facebook",
+    "logout": "ອອກຈາກລະບົບ",
+    "leaderboard": "ຈັດອັນດັບ"
+  },
+  "map": {
+    "search_placeholder": "ຄົ້ນຫາສະຖານີ...",
+    "loading_map": "ກຳລັງໂຫລດແຜນທີ່...",
+    "login_required": "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນ",
+    "no_stations_found": "ບໍ່ພົບຂໍ້ມູນສະຖານີ",
+    "try_again_or_add": "(ກະລຸນາລອງໃໝ່ ຫຼື ເພີ່ມສະຖານີໃໝ່)",
+    "filter_all": "ທັງໝົດ",
+    "filter_available": "ມີນໍ້າມັນ",
+    "filter_out_of_stock": "ນໍ້າມັນໝົດ",
+    "filter_pending": "ສະຖານີທີ່ຍັງບໍ່ທັນອະນຸມັດ",
+    "updated_at": "ອັບເດດເມື່ອ",
+    "distance": "ໄລຍະທາງ",
+    "queue_status": "ສະຖານະຄິວ",
+    "fuel_status": "ສະຖານະນໍ້າມັນ",
+    "report_status": "ແຈ້ງສະຖານະ",
+    "approve": "ອະນຸມັດ",
+    "reject": "ປະຕິເສດ",
+    "premium": "ແອັດຊັງພິເສດ",
+    "regular": "ແອັດຊັງທຳມະດາ",
+    "diesel": "ກະຊວນ",
+    "pending_approval": "ກຳລັງກວດສອບ",
+    "click_to_report": "ຄລິກເພື່ອລາຍງານ",
+    "legend": "ສັນຍະລັກ",
+    "add_station_hint": "🖱️ ກົດຄ້າງໄວ້ເພື່ອເພີ່ມປ້ຳໃໝ່",
+    "admin_panel": "ແຜງຄວບຄຸມ Admin",
+    "admin_pending_stations": "Admin: ສະຖານີທີ່ລໍຖ້າການກວດສອບ"
+  },
+  "report": {
+    "title": "ແຈ້ງສະຖານະ",
+    "fuel_availability": "ປະເພດນໍ້າມັນທີ່ມີ",
+    "queue_label": "ສະຖານະຄິວ",
+    "queue_none": "- ບໍ່ມີຄິວ -",
+    "login_required": "⚠️ ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນການລາຍງານ",
+    "comments_title": "ຄວາມຄິດເຫັນ",
+    "no_comments": "ຍັງບໍ່ມີຄວາມຄິດເຫັນ",
+    "comment_input_placeholder": "ສະແດງຄວາມຄິດເຫັນ...",
+    "login_to_comment": "ເຂົ້າສູ່ລະບົບເພື່ອສະແດງຄວາມຄິດເຫັນ",
+    "comment_placeholder": "ຄວາມຄິດເຫັນ (ຖ້າມີ)",
+    "your_points": "ຄະແນນຂອງທ່ານ",
+    "history": "ປະຫວັດການແຈ້ງ",
+    "no_history": "ບໍ່ມີປະຫວັດການແຈ້ງ",
+    "points_earned": "ເພີ່ມແລ້ວ! (+10 ຄະແນນ)",
+    "send_report": "ສົ່ງລາຍງານ",
+    "send_comment": "ສົ່ງ"
+  },
+  "add_station": {
+    "title": "ເພີ່ມປ່າໃໝ່",
+    "subtitle": "ກະລຸນາໃສ່ຂໍ້ມູນສະຖານີໃຫ້ຄົບຖ້ວນ",
+    "name_label": "ຊື່ສະຖານີ",
+    "brand_label": "ຍີ່ຫໍ້ (ຖ້າມີ)",
+    "brand_placeholder": "ຕົວຢ່າງ: PTT, Plus, PetroTrade",
+    "fuel_types": "ປະເພດນໍ້າມັນທີ່ມີ",
+    "submit_button": "ເພີ່ມສະຖານີ",
+    "success_message": "ເພີ່ມສະຖານີແລ້ວ! (+20 ຄະແນນ) ລໍຖ້າການອະນຸມັດຈາກ admin."
+  },
+  "fuel_status": {
+    "available": "ມີນໍ້າມັນ",
+    "low": "ນໍ້າມັນໜ້ອຍ",
+    "out_of_stock": "ນໍ້າມັນໝົດ",
+    "unknown": "ບໍ່ມີຂໍ້ມູນ"
+  },
+  "fuel_type": {
+    "premium": "ພິເສດ",
+    "regular": "ທຳມະດາ",
+    "diesel": "ກະຊວນ"
+  },
+  "queue": {
+    "short": "ຄິວນ້ອຍ",
+    "medium": "ຄິວປານກາງ",
+    "long": "ຄິວຍາວ",
+    "unknown": "ບໍ່ມີຂໍ້ມູນ/ບໍ່ມີຄິວ"
+  },
+  "support": {
+    "title": "ຊື້ກາເຟໃຫ້ພວກເຮົາ",
+    "explanation": "ການດຳເນີນລະບົບນີ້ ມີຄ່າໃຊ້ຈ່າຍ ເຊັ່ນ: ເຊີບເວີ, ລະບົບ SMS ຢືນຢັນຕົວຕົນ, cloud storage ສຳລັບຮູບ, domain ແລະ ອື່ນໆ. ຖ້າທ່ານໄດ້ປະໂຫຍດຈາກລະບົບນີ້ ການສະໜັບສະໜູນຂອງທ່ານ ຈະຊ່ວຍໃຫ້ພວກເຮົາ ສາມາດຮັກສາລະບົບນີ້ໄວ້ ໃຫ້ທຸກຄົນໃຊ້ໄດ້ຟຣີ ຕໍ່ໄປ. 🙏",
+    "scan_qr": "ສະແກນ QR ເພື່ອບໍລິຈາກ — ທຸກຈຳນວນມີຄ່າ",
+    "bcel_one": "BCEL One",
+    "ldb_bank": "LDB Bank",
+    "download_qr": "ດາວໂຫລດ QR Code",
+    "thank_you": "ຂອບໃຈທີ່ສະໜັບສະໜູນ! ທຸກການບໍລິຈາກຈະຖືກນໍາໃຊ້ເພື່ອຮັກສາລະບົບ."
+  }
+}

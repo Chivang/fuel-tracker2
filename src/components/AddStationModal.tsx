@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/utils/supabase'
 import type { User } from '@supabase/supabase-js'
+import { useLanguage } from '@/i18n/LanguageContext'
 
 interface AddStationModalProps {
   lat: number
@@ -13,6 +14,7 @@ interface AddStationModalProps {
 }
 
 export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: AddStationModalProps) {
+  const { t } = useLanguage()
   const [name, setName] = useState('')
   const [brand, setBrand] = useState('')
   const [hasPremium, setHasPremium] = useState(false)
@@ -77,9 +79,9 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
 
       onSuccess()
       onClose()
-      alert('ເພີ່ມສະຖານີແລ້ວ! (+20 ຄະແນນ) ລໍຖ້າການອະນຸມັດຈາກ admin.')
+      alert(t('add_station.success_message'))
     } catch (err: any) {
-      setError(err.message || 'ເກີດຂໍ້ຜິດພາດ')
+      setError(err.message || t('common.error'))
     } finally {
       setIsSubmitting(false)
     }
@@ -99,8 +101,8 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
-          <h2 className="text-xl font-bold text-green-800">ເພີ່ມປ້ຳໃໝ່</h2>
-          <p className="text-xs text-gray-500 mt-1">ກະລຸນາໃສ່ຂໍ້ມູນສະຖານີໃຫ້ຄົບຖ້ວນ</p>
+          <h2 className="text-xl font-bold text-green-800">{t('add_station.title')}</h2>
+          <p className="text-xs text-gray-500 mt-1">{t('add_station.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
@@ -112,25 +114,25 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
 
           {/* Name */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-600 px-1">ຊື່ສະຖານີ <span className="text-red-500">*</span></label>
+            <label className="text-xs font-bold text-gray-600 px-1">{t('add_station.name_label')} <span className="text-red-500">*</span></label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="ຕົວຢ່າງ: PTT ໂພນທັນ"
+              placeholder="e.g. PTT Phonthan"
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
             />
           </div>
 
           {/* Brand */}
           <div className="space-y-1.5">
-            <label className="text-xs font-bold text-gray-600 px-1">ຍີ່ຫໍ້ (ຖ້າມີ)</label>
+            <label className="text-xs font-bold text-gray-600 px-1">{t('add_station.brand_label')}</label>
             <input
               type="text"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              placeholder="ຕົວຢ່າງ: PTT, Plus, PetroTrade"
+              placeholder={t('add_station.brand_placeholder')}
               className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900 placeholder:text-gray-400"
             />
           </div>
@@ -139,7 +141,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
             {/* Fuel Type Checkboxes */}
             <div className="space-y-3">
               <label className="text-xs font-bold text-gray-600 px-1 flex items-center gap-2">
-                ⛽ ປະເພດນໍ້າມັນທີ່ມີ
+                ⛽ {t('add_station.fuel_types')}
               </label>
               <div className="grid grid-cols-1 gap-2 border border-gray-100 p-3 rounded-xl bg-gray-50/50">
                 <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
@@ -149,7 +151,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
                     onChange={(e) => setHasPremium(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500 cursor-pointer"
                   />
-                  <span className="text-xs font-bold text-gray-700">ແອັດຊັງພິເສດ (Premium / 95)</span>
+                  <span className="text-xs font-bold text-gray-700">{t('map.premium')} (Premium / 95)</span>
                 </label>
                 
                 <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
@@ -159,7 +161,7 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
                     onChange={(e) => setHasRegular(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500 cursor-pointer"
                   />
-                  <span className="text-xs font-bold text-gray-700">ແອັດຊັງທຳມະດາ (Regular / 91)</span>
+                  <span className="text-xs font-bold text-gray-700">{t('map.regular')} (Regular / 91)</span>
                 </label>
                 
                 <label className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-all cursor-pointer group">
@@ -169,23 +171,23 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
                     onChange={(e) => setHasDiesel(e.target.checked)}
                     className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                   />
-                  <span className="text-xs font-bold text-gray-700">ກະຊວນ (Diesel)</span>
+                  <span className="text-xs font-bold text-gray-700">{t('map.diesel')} (Diesel)</span>
                 </label>
               </div>
             </div>
 
             {/* Queue Status Select */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-gray-600 px-1">ສະຖານະຄິວ</label>
+              <label className="text-xs font-bold text-gray-600 px-1">{t('map.queue_status')}</label>
               <select
                 value={queueStatus}
                 onChange={(e) => setQueueStatus(e.target.value)}
                 className="w-full p-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm text-gray-900 font-phetsarath"
               >
-                <option value="short">ຄິວນ້ອຍ</option>
-                <option value="medium">ຄິວປານກາງ</option>
-                <option value="long">ຄິວຍາວ</option>
-                <option value="unknown">ບໍ່ມີຂໍ້ມູນ</option>
+                <option value="short">{t('queue.short')}</option>
+                <option value="medium">{t('queue.medium')}</option>
+                <option value="long">{t('queue.long')}</option>
+                <option value="unknown">{t('queue.unknown')}</option>
               </select>
             </div>
           </div>
@@ -197,14 +199,14 @@ export default function AddStationModal({ lat, lng, user, onClose, onSuccess }: 
               onClick={onClose}
               className="flex-1 py-3 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-xl transition-all"
             >
-              ຍົກເລີກ
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !name.trim()}
               className="flex-[2] py-3 bg-green-600 text-white text-sm font-bold rounded-xl hover:bg-green-700 active:scale-95 transition-all shadow-md shadow-green-100 disabled:opacity-50"
             >
-              {isSubmitting ? 'ກຳລັງບັນທຶກ...' : 'ເພີ່ມສະຖານີ'}
+              {isSubmitting ? t('common.adding') : t('add_station.submit_button')}
             </button>
           </div>
         </form>
