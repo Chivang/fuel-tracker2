@@ -12,7 +12,7 @@ export default function SupportPage() {
     <div className="min-h-screen bg-[#f8f9fa] font-phetsarath flex flex-col pt-10 pb-20 px-4">
       {/* Back Button */}
       <div className="max-w-2xl mx-auto w-full mb-6">
-        <Link 
+        <Link
           href="/"
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-green-600 transition-colors font-bold"
         >
@@ -48,21 +48,19 @@ export default function SupportPage() {
           <div className="flex p-1 bg-gray-100 rounded-2xl">
             <button
               onClick={() => setActiveBank('bcel')}
-              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${
-                activeBank === 'bcel' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${activeBank === 'bcel'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+                }`}
             >
               {t('support.bcel_one')}
             </button>
             <button
               onClick={() => setActiveBank('ldb')}
-              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${
-                activeBank === 'ldb' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all ${activeBank === 'ldb'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-500 hover:text-gray-700'
+                }`}
             >
               {t('support.ldb_bank')}
             </button>
@@ -71,8 +69,8 @@ export default function SupportPage() {
           {/* QR Content */}
           <div className="space-y-6">
             <div className="aspect-square max-w-[320px] mx-auto bg-gray-50 rounded-3xl border-8 border-[#f8f9fa] overflow-hidden shadow-inner group relative">
-              <img 
-                src={activeBank === 'bcel' ? '/images/bcel_qr.png' : '/images/ldb_qr.png'} 
+              <img
+                src={activeBank === 'bcel' ? '/images/bcel_qr.png' : '/images/ldb_qr.png'}
                 alt="QR Code"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
@@ -82,7 +80,7 @@ export default function SupportPage() {
             </div>
 
             <p className="text-xs font-bold text-gray-700 uppercase tracking-widest bg-gray-50 py-2 inline-block px-6 rounded-full border border-gray-100 italic">
-              THINNAKONE BOUASAVANH MR
+              CHIVANG XIANENG MR
             </p>
 
             <button
